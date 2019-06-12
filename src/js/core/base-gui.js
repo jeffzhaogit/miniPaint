@@ -42,13 +42,13 @@ class Base_gui_class {
 
 		//common image dimensions
 		this.common_dimensions = [
-			[640, 480, '480p'],
-			[800, 600, 'SVGA'],
+			//[640, 480, '480p'],
+			//[800, 600, 'SVGA'],
 			[1024, 768, 'XGA'],
 			[1280, 720, 'hdtv, 720p'],
 			[1600, 1200, 'UXGA'],
 			[1920, 1080, 'Full HD, 1080p'],
-			[3840, 2160, '4K UHD'],
+			//[3840, 2160, '4K UHD'],
 			//[7680,4320, '8K UHD'],
 		];
 
@@ -222,7 +222,7 @@ class Base_gui_class {
 	}
 
 	load_translations() {
-		var lang = this.Helper.getCookie('language');
+		var lang = this.Helper.getCookie('language') || 'zh';
 		
 		//load from params
 		var params = this.Helper.get_url_parameters();
