@@ -156,10 +156,13 @@ class File_save_class {
                     canvas.height = config.HEIGHT;
                     self.disable_canvas_smooth(ctx);
                     self.Base_layers.convert_layers_to_canvas(ctx);
+                    ctx.globalCompositeOperation = 'destination-over';
+                    self.fillCanvasBackground(ctx, '#ffffff');
+                    ctx.globalCompositeOperation = 'source-over';
                     
                     canvas.toBlob(function (blob) {
                         var fd = new FormData();
-                        fd.append('fname', 'myImage.jpg');
+                        fd.append('fname', 'myImage.png');
                         fd.append('data', blob);
                         
                         $.ajax({
@@ -175,7 +178,7 @@ class File_save_class {
                             alertify.error('保存失败，请稍后再次尝试。');
                         });
                         
-                    }, "image/jpeg", 0.9);
+                    });
                 }
             };
             this.POP.show(settings);
