@@ -8,6 +8,7 @@ import Base_gui_class from './base-gui.js';
 import Base_selection_class from './base-selection.js';
 import Base_state_class from './base-state.js';
 import Image_trim_class from './../modules/image/trim.js';
+import File_open_class from './../modules/file/open.js';
 import zoomView from './../libs/zoomView.js';
 import Helper_class from './../libs/helpers.js';
 import alertify from './../../../node_modules/alertifyjs/build/alertify.min.js';
@@ -62,6 +63,7 @@ class Base_layers_class {
 		this.auto_increment = 1;
 		this.stable_dimensions = [];
 		this.tempCanvas = document.createElement('canvas');
+                this.reqParams = this.Helper.get_url_parameters();
 	}
 
 	/**
@@ -82,6 +84,24 @@ class Base_layers_class {
 		this.Base_selection = new Base_selection_class(this.ctx, sel_config, 'main');
 
 		this.render(true);
+                
+                //default layer (with image
+                var initialImgId = this.reqParams.initial;
+                if (initialImgId) {
+                    var data = {
+                        url: config.fileServiceUrl + '/file/' + initialImgId
+                    };
+                    new File_open_class().file_open_url_handler(data);
+                }
+                
+                //intialize for user
+                var uid = this.reqParams.uid;
+                var system = this.reqParams.system;
+                if (uid) {
+                    $('.paintMenu .personal').css('display', '');
+                } else if (system){
+                    $('.paintMenu .system').css('display', '');
+                }
 	}
 
 	init_zoom_lib() {

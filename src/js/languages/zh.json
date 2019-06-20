@@ -210,7 +210,7 @@
     "Offset X:": "偏移量X：",
     "Offset Y:": "偏移Y：",
     "Oil": "油",
-    "Ok": "好",
+    "Ok": "确定",
     "Online image editor.": "在线图像编辑器。",
     "Opacity": "不透明度",
     "Opacity:": "不透明度：",
@@ -373,5 +373,12 @@
     "Zoom blur": "变焦模糊",
     "Zoom in": "放大",
     "Zoom out": "缩小",
-    "Zoom:": "放大："
+    "Zoom:": "放大：",
+    
+    "Save to server": "另存至图库",
+    "Save for personal" : "另存至个人图库",
+    "Download": "下载",
+    "Tags:": " 关键字<br>(若多个以空格隔开):",
+    "Comments:": "图片信息:",
+    "Search personal images": "个人图库搜索"
 }

@@ -92,9 +92,14 @@ class Dialog_class {
 		this.ef_index = null; //current effect list key
 		this.ef_prev_index = null;
 		this.ef_next_index = null;
+                this.disable_close_onok= 0;
 
 		this.set_events();
 	}
+        
+        disableCloseOnOK() {
+            this.disable_close_onok = 1;
+        }
 
 	/**
 	 * shows dialog
@@ -200,10 +205,10 @@ class Dialog_class {
 		var params = this.get_params();
 
 		if (this.onfinish) {
-			this.onfinish(params);
+                    this.onfinish(params);
 		}
 
-		this.hide(true);
+		if (!this.disable_close_onok) this.hide(true);
 	}
 	
 	//"Cancel" pressed
@@ -380,6 +385,9 @@ class Dialog_class {
 
 		//call translation again to translate popup
 		this.Help_translate.translate(app_config.LANG);
+                
+                $('#params_content input').first().select();
+                $('#params_content input').first().focus();
 	}
 
 	generateParamsHtml() {

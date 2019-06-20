@@ -564,9 +564,11 @@ canvas{
 	flex-wrap: wrap;
 }
 .flex-container .item{
-	flex: auto;
-	margin: 2px 0;
-	width: 150px;
+	margin: 2px;
+}
+.flex-container .item img {
+    max-width: 150px;
+    max-height: 100px;
 }
 .flex-container .item:empty{
 	height: 0;

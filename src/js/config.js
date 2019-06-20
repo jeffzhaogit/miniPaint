@@ -12,11 +12,12 @@ config.visible_height = null;
 config.COLOR = '#008000';
 config.ALPHA = 255;
 config.ZOOM = 1;
-config.pixabay_key = '3ca2cd8af3fde33af218bea02-9021417';
 config.layers = [];
 config.layer = null;
 config.need_render = false;
 config.mouse = {};
+
+config.fileServiceUrl = 'http://localhost:12507';
 
 //requires styles in reset.css
 config.themes = [

@@ -11,8 +11,9 @@ class Help_shortcuts_class {
 		var settings = {
 			title: 'Keyboard Shortcuts',
 			params: [
-				{title: "F9", value: 'Quick save'},
-				{title: "F10", value: 'Quick load'},
+//				{title: "F9", value: 'Quick save'},
+//				{title: "F10", value: 'Quick load'},
+                                {title: "Q", value: 'Search images'},
 				{title: "S", value: 'Save'},
 				{title: "T", value: 'Trim'},
 				{title: "F", value: 'Auto adjust colors'},

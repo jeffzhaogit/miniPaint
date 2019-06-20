@@ -2,6 +2,7 @@ import config from './../../config.js';
 import File_open_class from './open.js';
 import Dialog_class from './../../libs/popup.js';
 import alertify from './../../../../node_modules/alertifyjs/build/alertify.min.js';
+import Helper_class from './../../libs/helpers.js';
 
 /** 
  * manages image search on https://pixabay.com/en/service/about/api/
@@ -11,26 +12,50 @@ class File_search_media_class {
 	constructor() {
 		this.File_open = new File_open_class();
 		this.POP = new Dialog_class();
+                this.Helper = new Helper_class();
 		this.cache = [];
+                this.set_events();
+                
+                this.uid = this.Helper.get_url_parameters().uid || 0;
 	}
+        
+        set_events() {
+		var _this = this;
+
+		document.addEventListener('keydown', function (event) {
+			var code = event.keyCode;
+			if (event.target.type == 'text' || event.target.tagName == 'INPUT' || event.target.type == 'textarea')
+				return;
+
+			if (code === 81) {
+				_this.search('', [], 0);
+				event.preventDefault();
+			}
+		}, false);
+	}
+        
+        searchSystem(query = '', data = []) {
+            this.search('', data, 0);
+        }
+        
+        searchPersonal(query = '', data = []) {
+            this.search('', data, 1);
+        }
 
 	/**
-	 * Image search api
+	 * Image search apiq
 	 * 
 	 * @param {string} query
 	 * @param {array} data
 	 */
-	search(query = '', data = []) {
+	search(query = '', data = [], source = 1) {
 		var _this = this;
 		var html = '';
-
-		var key = config.pixabay_key;
-		key = key.split("").reverse().join("");
-
+                
 		if (data.length > 0) {
 			for (var i in data) {
 				html += '<div class="item pointer">';
-				html += '<img class="displayBlock" alt="" src="' + data[i].previewURL + '" data-url="' + data[i].webformatURL + '" />';
+				html += '<img class="displayBlock" alt="" src="' + data[i].url + '" data-url="' + data[i].url + '" />';
 				html += '</div>';
 			}
 			//fix for last line
@@ -42,7 +67,7 @@ class File_search_media_class {
 
 		var settings = {
 			title: 'Search',
-			comment: 'Source: <a class="grey" href="https://pixabay.com/">kclass.com</a>.',
+			comment: source === 1 ? '来源: <span style="color:green">个人图库</span>' : '来源: <span style="color:green">楷课图库</span>',
 			className: 'wide',
 			params: [
 				{name: "query", title: "Keyword:", value: query},
@@ -70,28 +95,28 @@ class File_search_media_class {
 				if (params.query == '')
 					return;
 
-				if (_this.cache[params.query] != undefined) {
+				if (_this.cache[source + '_' + params.query] != undefined) {
 					//using cache
 
 					setTimeout(function () {
 						//only call same function after all handlers finishes
-						var data = _this.cache[params.query];
-						if (parseInt(data.totalHits) == 0) {
-							alertify.error('Your search did not match any images.');
+						var data = _this.cache[source + '_' + params.query];
+						if (data.length === 0) {
+							alertify.error('没有找到任何图片，请重新指定关键字查询。');
 						}
-						_this.search(params.query, data.hits);
+						_this.search(params.query, data, source);
 					}, 100);
 				}
 				else {
 					//query to service
-					var URL = "https://pixabay.com/api/?key=" + key + "&per_page=50&q=" + encodeURIComponent(params.query);
+					var URL = config.fileServiceUrl + '/tag/' + encodeURIComponent((source === 1? ('个人图库,' + _this.uid + ',+') : '楷课图库,+') + params.query) + "?limit=50";
 					$.getJSON(URL, function (data) {
-						_this.cache[params.query] = data;
+						_this.cache[source + '_' + params.query] = data;
 
-						if (parseInt(data.totalHits) == 0) {
-							alertify.error('Your search did not match any images.');
+						if (data.length === 0) {
+							alertify.error('没有找到任何图片，请重新指定关键字查询。');
 						}
-						_this.search(params.query, data.hits);
+						_this.search(params.query, data, source);
 					})
 						.fail(function () {
 							alertify.error('Error connecting to service.');

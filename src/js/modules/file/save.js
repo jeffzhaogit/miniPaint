@@ -26,7 +26,9 @@ class File_save_class {
 		this.Base_layers = new Base_layers_class();
 		this.Helper = new Helper_class();
 		this.POP = new Dialog_class();
-
+                
+                this.uid = this.Helper.get_url_parameters().uid || 0;
+                
 		this.set_events();
 
 		//save types config
@@ -48,15 +50,18 @@ class File_save_class {
 			if (event.target.type == 'text' || event.target.tagName == 'INPUT' || event.target.type == 'textarea')
 				return;
 
-			if (code == 83) {
+			if (code === 68) {
 				//save
-				_this.save();
+				_this.download();
 				event.preventDefault();
-			}
+			} else if (code === 83) {
+                            _this.save_to_server();
+                            event.preventDefault();
+                        }
 		}, false);
 	}
 
-	save() {
+	download() {
 		var _this = this;
 
 		//find default format
@@ -78,7 +83,7 @@ class File_save_class {
 		file_name = file_name.replace(/ /g, "-");
 
 		var settings = {
-			title: 'Save as',
+			title: 'Download',
 			params: [
 				{name: "name", title: "File name:", value: file_name},
 				{name: "type", title: "Save as type:", values: this.SAVE_TYPES, value: save_default},
@@ -118,6 +123,57 @@ class File_save_class {
 			this.save_dialog_onchange();
 		}
 	}
+        
+        save_to_server() {
+            var self = this;
+            
+            var settings = {
+                title: 'Save to server',
+                params: [
+                    {name: "tags", title: "Tags:", type: "text", value: ''},
+                    {name: "comments", title: "Comments:", type: "textarea", value: ''}
+                ],
+                on_finish: function (params) {
+                    if (!params.tags) {
+                        alertify.error('请指定至少一个关键字以便于搜索');
+                        this.POP.disableCloseOnOK();
+                        return;
+                    }
+
+                    var uploadUrl = config.fileServiceUrl + '/upload';
+                    var headers = {tags: encodeURIComponent((self.uid ? ('个人图库,' + self.uid + ',') : '楷课图库,') + params.tags), comments: encodeURIComponent(params.comments || '')};
+                    
+                    //create temp canvas
+                    var canvas = document.createElement('canvas');
+                    var ctx = canvas.getContext("2d");
+                    canvas.width = config.WIDTH;
+                    canvas.height = config.HEIGHT;
+                    self.disable_canvas_smooth(ctx);
+                    self.Base_layers.convert_layers_to_canvas(ctx);
+                    
+                    canvas.toBlob(function (blob) {
+                        var fd = new FormData();
+                        fd.append('fname', 'myImage.jpg');
+                        fd.append('data', blob);
+                        
+                        $.ajax({
+                            type: 'POST',
+                            url: uploadUrl,
+                            headers: headers,
+                            data: fd,
+                            processData: false,
+                            contentType: false
+                        }).done(function(data) {
+                            alertify.success('成功保存至楷课图库');
+                        }).fail(function(){
+                            alertify.error('保存失败，请稍后再次尝试。');
+                        });
+                        
+                    }, "image/jpeg", 0.9);
+                }
+            };
+            this.POP.show(settings);
+        }
 
 	save_data_url() {
 		var max = 10 * 1000 * 1000;

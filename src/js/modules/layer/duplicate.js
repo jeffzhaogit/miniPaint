@@ -24,12 +24,12 @@ class Layer_duplicate_class {
 			var code = event.keyCode;
 			if (event.target.type == 'text' || event.target.tagName == 'INPUT' || event.target.type == 'textarea')
 				return;
-
-			if (code == 68) {
-				//D - duplicate
-				_this.duplicate();
-				event.preventDefault();
-			}
+                            
+//			if (code == 68) {
+//				//D - duplicate
+//				_this.duplicate();
+//				event.preventDefault();
+//			}
 		}, false);
 	}
 

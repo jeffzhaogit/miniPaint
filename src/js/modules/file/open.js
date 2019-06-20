@@ -64,7 +64,7 @@ class File_open_class {
 	open_file() {
 		var _this = this;
 
-		alertify.success('You can also drag and drop items into browser.');
+		alertify.success('你也可以将图片直接从文件夹中拖放进来。');
 
 		document.getElementById("tmp").innerHTML = '';
 		var a = document.createElement('input');
@@ -214,7 +214,7 @@ class File_open_class {
 			};
 		};
 		img.onerror = function (ex) {
-			alertify.error('Sorry, image could not be loaded. Try copy image and paste it.');
+			alertify.error('图片加载失败，请确认图片是否存在。');
 		};
 		img.src = data;
 	}
@@ -308,7 +308,7 @@ class File_open_class {
 		}).then(function(json) {
 			_this.load_json(json, false);
 		}).catch(function(ex) {
-			alertify.error('Sorry, image could not be loaded.');
+			alertify.error('图片加载失败，请确认图片是否存在。');
 		});
 	}
 
@@ -328,7 +328,7 @@ class File_open_class {
 				}).then(function(json) {
 					_this.load_json(json, false);
 				}).catch(function(ex) {
-					alertify.error('Sorry, image could not be loaded.');
+					alertify.error('图片加载失败，请确认图片是否存在。');
 				});
 			}
 			else{
@@ -369,7 +369,7 @@ class File_open_class {
 			_this.Base_layers.autoresize(img.width, img.height);
 		};
 		img.onerror = function (ex) {
-			alertify.error('Sorry, image could not be loaded. Try copy image and paste it.');
+			alertify.error('图片加载失败，请确认图片是否存在。');
 		};
 		img.src = url;
 	}
