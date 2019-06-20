@@ -17,7 +17,8 @@ config.layer = null;
 config.need_render = false;
 config.mouse = {};
 
-config.fileServiceUrl = 'http://localhost:12507';
+//config.fileServiceUrl = 'https://localhost:12507';
+config.fileServiceUrl = 'https://kclass.app:81';
 
 //requires styles in reset.css
 config.themes = [

@@ -27,7 +27,13 @@ class File_save_class {
 		this.Helper = new Helper_class();
 		this.POP = new Dialog_class();
                 
-                this.uid = this.Helper.get_url_parameters().uid || 0;
+                this.reqParams = this.Helper.get_url_parameters();
+                this.uid = this.reqParams.uid || 0;
+                this.system = this.reqParams.system || 0;
+                
+                if (!this.uid && !this.system) {
+                    return;
+                }
                 
 		this.set_events();
 
@@ -128,7 +134,7 @@ class File_save_class {
             var self = this;
             
             var settings = {
-                title: 'Save to server',
+                title: self.uid ? 'Save for personal' : 'Save to server',
                 params: [
                     {name: "tags", title: "Tags:", type: "text", value: ''},
                     {name: "comments", title: "Comments:", type: "textarea", value: ''}

@@ -7,7 +7,7 @@ var menu_template = `
 				<li><div class="mid-line"></div></li>
 				<li><a class="trn dots" data-target="file/open.open_file" data-key="Drag&Drop" href="#">Open File</a></li>
 				<li><a class="trn dots" data-target="file/search.searchSystem" data-key="Q" href="#">Search images</a></li>
-                                <li><a class="trn dots" data-target="file/search.searchPersonal" href="#">Search personal images</a></li>
+                                <li><a class="trn dots personal" style="display:none" data-target="file/search.searchPersonal" href="#">Search personal images</a></li>
                                 <li><div class="mid-line"></div></li>
                                 <li><a class="trn dots system" style="display:none" data-target="file/save.save_to_server" data-key="S" href="#">Save to server</a></li>
                                 <li><a class="trn dots personal" style="display:none" data-target="file/save.save_to_server" data-key="S" href="#">Save for personal</a></li>
